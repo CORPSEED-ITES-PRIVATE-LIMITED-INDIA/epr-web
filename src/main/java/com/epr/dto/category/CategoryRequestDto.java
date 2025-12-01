@@ -19,11 +19,9 @@ public class CategoryRequestDto {
     @Size(max = 255)
     private String icon;
 
-    private Integer sequence;
+    private Integer displayStatus = 1;
 
-    private String displayStatus = "1";
-
-    private String showHomeStatus = "2";
+    private Integer showHomeStatus = 2;
 
     // SEO fields
     private String metaTitle;

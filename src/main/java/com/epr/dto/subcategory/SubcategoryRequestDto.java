@@ -21,9 +21,7 @@ public class SubcategoryRequestDto {
     @NotNull(message = "Category ID is required")
     private Long categoryId;
 
-    private Integer sequence;
-
-    private String displayStatus = "1"; // 1=show, 2=hide
+    private Integer displayStatus = 1;
 
     private String metaTitle;
     private String metaKeyword;

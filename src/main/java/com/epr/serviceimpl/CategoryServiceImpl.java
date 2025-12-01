@@ -38,13 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found or account is inactive/deleted"));
     }
 
-    @Override
-    public List<CategoryResponseDto> findAllActiveCategories() {
-        return categoryRepository.findByDeleteStatusOrderBySequenceAsc(2)
-                .stream()
-                .map(this::toResponseDto)
-                .collect(Collectors.toList());
-    }
+
 
     @Override
     public CategoryResponseDto findById(Long id) {
@@ -150,12 +144,6 @@ public class CategoryServiceImpl implements CategoryService {
         entity.setName(dto.getName().trim());
         entity.setSlug(dto.getSlug().trim().toLowerCase());
         entity.setIcon(dto.getIcon());
-        entity.setSequence(dto.getSequence() != null ? dto.getSequence() : 0);
-        entity.setDisplayStatus(dto.getDisplayStatus() != null && !dto.getDisplayStatus().trim().isEmpty()
-                ? dto.getDisplayStatus().trim() : "1");
-        entity.setShowHomeStatus(dto.getShowHomeStatus() != null && !dto.getShowHomeStatus().trim().isEmpty()
-                ? dto.getShowHomeStatus().trim() : "2");
-
         entity.setMetaTitle(dto.getMetaTitle());
         entity.setMetaKeyword(dto.getMetaKeyword());
         entity.setMetaDescription(dto.getMetaDescription());
@@ -169,9 +157,6 @@ public class CategoryServiceImpl implements CategoryService {
         dto.setName(category.getName());
         dto.setSlug(category.getSlug());
         dto.setIcon(category.getIcon());
-        dto.setSequence(category.getSequence());
-        dto.setDisplayStatus(category.getDisplayStatus());
-        dto.setShowHomeStatus(category.getShowHomeStatus());
         dto.setMetaTitle(category.getMetaTitle());
         dto.setMetaKeyword(category.getMetaKeyword());
         dto.setMetaDescription(category.getMetaDescription());

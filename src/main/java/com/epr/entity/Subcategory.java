@@ -30,9 +30,6 @@ public class Subcategory {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name = "sequence_position")
-    private Integer sequence = 0;
-
     @Column(length = 2, columnDefinition = "varchar(2) default '1'")
     private Integer displayStatus = 1;  // 1=show, 2=hide
 

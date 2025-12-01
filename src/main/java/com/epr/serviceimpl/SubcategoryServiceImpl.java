@@ -39,21 +39,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found or inactive"));
     }
 
-    @Override
-    public List<SubcategoryResponseDto> findAllActiveSubcategories() {
-        return subcategoryRepository.findByDeleteStatusOrderBySequenceAsc(2)
-                .stream()
-                .map(this::toResponseDto)
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public List<SubcategoryResponseDto> findByCategoryId(Long categoryId) {
-        return subcategoryRepository.findByCategoryIdAndDeleteStatusOrderBySequenceAsc(categoryId, 2)
-                .stream()
-                .map(this::toResponseDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public SubcategoryResponseDto findById(Long id) {
@@ -156,9 +142,6 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     private void mapRequestToEntity(SubcategoryRequestDto dto, Subcategory entity) {
         entity.setName(dto.getName().trim());
         entity.setSlug(dto.getSlug().trim().toLowerCase());
-        entity.setSequence(dto.getSequence() != null ? dto.getSequence() : 0);
-        entity.setDisplayStatus(dto.getDisplayStatus() != null && !dto.getDisplayStatus().isBlank()
-                ? Integer.parseInt(dto.getDisplayStatus().trim()) : 1);
         entity.setMetaTitle(dto.getMetaTitle());
         entity.setMetaKeyword(dto.getMetaKeyword());
         entity.setMetaDescription(dto.getMetaDescription());
@@ -170,8 +153,6 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         dto.setUuid(s.getUuid());
         dto.setName(s.getName());
         dto.setSlug(s.getSlug());
-        dto.setSequence(s.getSequence());
-        dto.setDisplayStatus(String.valueOf(s.getDisplayStatus()));
         dto.setMetaTitle(s.getMetaTitle());
         dto.setMetaKeyword(s.getMetaKeyword());
         dto.setMetaDescription(s.getMetaDescription());

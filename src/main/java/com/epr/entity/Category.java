@@ -31,14 +31,11 @@ public class Category {
     @Column(length = 255)
     private String icon;
 
-    @Column(name = "sequence_position")
-    private Integer sequence = 0;
-
     @Column(length = 2, columnDefinition = "varchar(2) default '1'")
-    private String displayStatus = "1"; // 1=show, 2=hide
+    private Integer displayStatus = 1; // 1=show, 2=hide
 
     @Column(length = 2, columnDefinition = "varchar(2) default '2'")
-    private String showHomeStatus = "2"; // 1=show on home, 2=don't
+    private Integer showHomeStatus = 2; // 1=show on home, 2=don't
 
     // SEO Fields
     private String metaTitle;

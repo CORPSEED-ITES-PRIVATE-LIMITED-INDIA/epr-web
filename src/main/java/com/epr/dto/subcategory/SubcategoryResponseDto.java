@@ -14,8 +14,7 @@ public class SubcategoryResponseDto {
     private String slug;
     private Long categoryId;
     private String categoryName;
-    private Integer sequence;
-    private String displayStatus;
+    private Integer displayStatus;
     private String metaTitle;
     private String metaKeyword;
     private String metaDescription;

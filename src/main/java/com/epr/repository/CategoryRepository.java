@@ -25,6 +25,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT COUNT(c) > 0 FROM Category c WHERE LOWER(c.slug) = LOWER(:slug) AND c.id != :id")
     boolean existsBySlugIgnoreCaseAndIdNot(@Param("slug") String slug, @Param("id") Long id);
 
-    // Optional: Get active categories sorted by sequence (for frontend ordering)
-    List<Category> findByDeleteStatusOrderBySequenceAsc(int deleteStatus);
 }
