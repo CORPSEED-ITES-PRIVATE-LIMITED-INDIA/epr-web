@@ -19,15 +19,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.id = :id AND u.deleteStatus = 2")
     Optional<User> findActiveById(@Param("id") Long id);
 
-    @Query("SELECT u FROM User u WHERE u.uuid = :uuid AND u.deleteStatus = 2")
-    Optional<User> findByUuidActive(@Param("uuid") String uuid);
-
-    @Query("SELECT u FROM User u WHERE u.email = :email AND u.deleteStatus = 2")
-    Optional<User> findByEmailActive(@Param("email") String email);
-
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email = :email AND u.deleteStatus = 2 AND (:id IS NULL OR u.id != :id)")
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END " +
+            "FROM User u WHERE u.email = :email AND u.deleteStatus = 2 AND (:id IS NULL OR u.id != :id)")
     boolean existsByEmailIgnoreCaseAndNotId(@Param("email") String email, @Param("id") Long id);
 
     @Query("SELECT u FROM User u WHERE (u.fullName LIKE %:keyword% OR u.email LIKE %:keyword%) AND u.deleteStatus = 2")
     List<User> searchByFullNameOrEmail(@Param("keyword") String keyword);
+
+    @Query("SELECT u FROM User u WHERE u.id = :id AND u.deleteStatus = 2")
+    Optional<User> findActiveUserById(@Param("id") Long id);
+
 }

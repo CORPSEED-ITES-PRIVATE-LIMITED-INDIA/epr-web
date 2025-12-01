@@ -201,7 +201,6 @@ public class UserServiceImpl implements UserService {
         user.setMetaTitle(dto.getMetaTitle());
         user.setMetaKeyword(dto.getMetaKeyword());
         user.setMetaDescription(dto.getMetaDescription());
-        user.setAccountStatus(dto.getAccountStatus() != 0 ? dto.getAccountStatus() : 1);
     }
 
     private void assignRoles(User user, List<Long> roleIds) {
@@ -237,7 +236,6 @@ public class UserServiceImpl implements UserService {
         dto.setMetaTitle(user.getMetaTitle());
         dto.setMetaKeyword(user.getMetaKeyword());
         dto.setMetaDescription(user.getMetaDescription());
-        dto.setAccountStatus(user.getAccountStatus());
         dto.setRoleNames(user.getRoles().stream()
                 .map(Role::getRoleName)
                 .collect(Collectors.toList()));

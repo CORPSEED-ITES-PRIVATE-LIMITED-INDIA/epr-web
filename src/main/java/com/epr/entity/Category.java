@@ -3,8 +3,12 @@ package com.epr.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+// src/main/java/com/epr/entity/Category.java
 
 @Entity
 @Table(name = "categories")
@@ -31,7 +35,7 @@ public class Category {
     private Integer sequence = 0;
 
     @Column(length = 2, columnDefinition = "varchar(2) default '1'")
-    private String displayStatus = "1";  // 1=show, 2=hide
+    private String displayStatus = "1"; // 1=show, 2=hide
 
     @Column(length = 2, columnDefinition = "varchar(2) default '2'")
     private String showHomeStatus = "2"; // 1=show on home, 2=don't
@@ -45,9 +49,17 @@ public class Category {
     @Column(columnDefinition = "TEXT")
     private String searchKeywords;
 
-    private String postDate;
-    private String modifyDate;
+    @Column(name = "post_date", nullable = false)
+    private LocalDateTime postDate;
+
+    @Column(name = "modify_date")
+    private LocalDateTime modifyDate;
+
+    @Column(name = "added_by_uuid", length = 100)
     private String addedByUUID;
+
+    @Column(name = "modify_by_uuid", length = 100)
+    private String modifyByUUID;
 
     @Column(columnDefinition = "int default 2")
     private int deleteStatus = 2; // 1=deleted, 2=active
@@ -56,7 +68,5 @@ public class Category {
     private List<Subcategory> subcategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Service> services = new ArrayList<>();
-
-
+    private List<Services> services = new ArrayList<>();
 }

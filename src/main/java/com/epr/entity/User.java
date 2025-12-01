@@ -70,14 +70,13 @@ public class User {
     private String twitter;
 
     private String slug;
+
     private String metaTitle;
+
     @Column(columnDefinition = "TEXT")
     private String metaKeyword;
     @Column(columnDefinition = "TEXT")
     private String metaDescription;
-
-    @Column(columnDefinition = "int default 1 COMMENT '1 active, 2 inactive'")
-    private int accountStatus = 1;
 
     @Column(columnDefinition = "int default 2 COMMENT '1 deleted, 2 not deleted'")
     private int deleteStatus = 2;

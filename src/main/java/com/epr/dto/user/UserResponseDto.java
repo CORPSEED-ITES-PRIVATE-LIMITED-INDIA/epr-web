@@ -27,6 +27,5 @@ public class UserResponseDto {
     private String metaTitle;
     private String metaKeyword;
     private String metaDescription;
-    private int accountStatus;
     private List<String> roleNames;  // Safe - only names, no full roles
 }

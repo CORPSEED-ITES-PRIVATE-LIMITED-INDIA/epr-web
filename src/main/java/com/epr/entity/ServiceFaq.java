@@ -21,7 +21,7 @@ public class ServiceFaq {
 
     @ManyToOne
     @JoinColumn(name = "service_id")
-    private Service service;
+    private Services service;
 
     @Column(columnDefinition = "int default 2")
     private int deleteStatus = 2;

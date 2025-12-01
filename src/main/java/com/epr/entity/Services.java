@@ -1,16 +1,18 @@
+// src/main/java/com/epr/entity/Services.java
 package com.epr.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "services")
 @Getter @Setter
-public class Service {
+public class Services {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +36,6 @@ public class Service {
     private String bannerImage;
     private String thumbnail;
     private String videoUrl;
-    private String processingTime;
-    private String validity;
-    private String priceStartsFrom;
-    private String legalGuideLink;
-
     // SEO
     private String metaTitle;
     @Column(columnDefinition = "TEXT")
@@ -46,26 +43,24 @@ public class Service {
     @Column(columnDefinition = "TEXT")
     private String metaDescription;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String faqSchema;
+    @Column(length = 2, columnDefinition = "int default 1")
+    private int displayStatus = 1;        // 1 = show, 2 = hide
 
-    @Column(length = 2, columnDefinition = "varchar(2) default '1'")
-    private String displayStatus = "1";
-
-    @Column(length = 2, columnDefinition = "varchar(2) default '2'")
-    private String showHomeStatus = "2";
+    @Column(length = 2, columnDefinition = "int default 2")
+    private int showHomeStatus = 2;       // 1 = show on home, 2 = hide
 
     @Column(name = "sequence_position")
     private Integer sequence = 0;
 
-    private String postDate;
-    private String modifyDate;
+    private LocalDateTime postDate;
+    private LocalDateTime modifyDate;
     private String addedByUUID;
+    private String modifyByUUID;
 
     private Long visited = 0L;
 
     @Column(columnDefinition = "int default 2")
-    private int deleteStatus = 2;
+    private int deleteStatus = 2;         // 1 = deleted, 2 = active
 
     // Relations
     @ManyToOne(fetch = FetchType.LAZY)
@@ -76,12 +71,10 @@ public class Service {
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
-    // Dynamic Tabs (Replaces ServiceDetails + ServiceCardList)
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("displayOrder ASC")
     private List<ServiceSection> sections = new ArrayList<>();
 
-    // FAQs, Packages, Documents, etc.
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServiceFaq> faqs = new ArrayList<>();
 

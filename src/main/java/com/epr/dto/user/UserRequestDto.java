@@ -42,7 +42,5 @@ public class UserRequestDto {
     private String metaKeyword;
     private String metaDescription;
 
-    private int accountStatus = 1;
-
     private List<Long> roleIds;  // For assigning multiple roles
 }

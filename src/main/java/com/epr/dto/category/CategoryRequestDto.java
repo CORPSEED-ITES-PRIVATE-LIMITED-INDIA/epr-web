@@ -21,9 +21,9 @@ public class CategoryRequestDto {
 
     private Integer sequence;
 
-    private String displayStatus; // "1" = show, "2" = hide
+    private String displayStatus = "1";
 
-    private String showHomeStatus; // "1" = show on home, "2" = don't
+    private String showHomeStatus = "2";
 
     // SEO fields
     private String metaTitle;

@@ -49,7 +49,7 @@ public class ServiceDocument {
     // Relationship
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
-    private Service service;
+    private Services service;
 
     // Optional: If you want to group documents under a tab/section later
     // @ManyToOne

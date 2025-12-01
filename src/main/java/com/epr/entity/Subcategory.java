@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +34,8 @@ public class Subcategory {
     private Integer sequence = 0;
 
     @Column(length = 2, columnDefinition = "varchar(2) default '1'")
-    private String displayStatus = "1";  // 1=show, 2=hide
+    private Integer displayStatus = 1;  // 1=show, 2=hide
 
-    // SEO
     private String metaTitle;
 
     @Column(columnDefinition = "TEXT")
@@ -44,13 +44,12 @@ public class Subcategory {
     @Column(columnDefinition = "TEXT")
     private String metaDescription;
 
-    private String postDate;
-    private String modifyDate;
-    private String addedByUUID;
+    private LocalDateTime postDate;
+    private LocalDateTime modifyDate;
 
     @Column(columnDefinition = "int default 2")
     private int deleteStatus = 2;
 
     @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Service> services = new ArrayList<>();
+    private List<Services> services = new ArrayList<>();
 }
