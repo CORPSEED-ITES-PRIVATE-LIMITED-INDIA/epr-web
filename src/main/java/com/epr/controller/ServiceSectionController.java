@@ -1,10 +1,10 @@
-// src/main/java/com/epr/controller/SubcategoryController.java
+// src/main/java/com/epr/controller/ServiceSectionController.java
 package com.epr.controller;
 
-import com.epr.dto.subcategory.SubcategoryRequestDto;
-import com.epr.dto.subcategory.SubcategoryResponseDto;
+import com.epr.dto.servicesection.ServiceSectionRequestDto;
+import com.epr.dto.servicesection.ServiceSectionResponseDto;
 import com.epr.error.ApiResponse;
-import com.epr.service.SubcategoryService;
+import com.epr.service.ServiceSectionService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,82 +16,71 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subcategories")
-public class SubcategoryController {
+@RequestMapping("/api/service-sections")
+public class ServiceSectionController {
 
-    private static final Logger log = LoggerFactory.getLogger(SubcategoryController.class);
+    private static final Logger log = LoggerFactory.getLogger(ServiceSectionController.class);
 
     @Autowired
-    private SubcategoryService subcategoryService;
+    private ServiceSectionService sectionService;
 
-    @GetMapping
-    public ResponseEntity<List<SubcategoryResponseDto>> getAllActive() {
-        List<SubcategoryResponseDto> list = subcategoryService.findAllActiveSubcategories();
+    // Get all sections for a service (ordered)
+    @GetMapping("/service/{serviceId}")
+    public ResponseEntity<List<ServiceSectionResponseDto>> getByService(@PathVariable Long serviceId) {
+        List<ServiceSectionResponseDto> list = sectionService.findByServiceId(serviceId);
         return list.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : ResponseEntity.ok(list);
     }
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<SubcategoryResponseDto>> getByCategory(@PathVariable Long categoryId) {
-        try {
-            List<SubcategoryResponseDto> list = subcategoryService.findByCategoryId(categoryId);
-            return list.isEmpty()
-                    ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                    : ResponseEntity.ok(list);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<SubcategoryResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<ServiceSectionResponseDto> getById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(subcategoryService.findById(id));
+            return ResponseEntity.ok(sectionService.findById(id));
         } catch (IllegalArgumentException e) {
-            log.warn("Subcategory not found: {}", id);
+            log.warn("Service section not found: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody SubcategoryRequestDto dto,
+    public ResponseEntity<?> create(@Valid @RequestBody ServiceSectionRequestDto dto,
                                     @RequestParam Long userId) {
         try {
-            SubcategoryResponseDto saved = subcategoryService.createSubcategory(dto, userId);
+            ServiceSectionResponseDto saved = sectionService.createSection(dto, userId);
             return new ResponseEntity<>(saved, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             log.error("Validation error: {}", e.getMessage());
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
-            log.error("Unexpected error creating subcategory", e);
+            log.error("Unexpected error creating section", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to create subcategory"));
+                    .body(ApiResponse.error("Failed to create section"));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id,
                                     @RequestParam Long userId,
-                                    @Valid @RequestBody SubcategoryRequestDto dto) {
+                                    @Valid @RequestBody ServiceSectionRequestDto dto) {
         try {
-            return ResponseEntity.ok(subcategoryService.updateSubcategory(id, dto, userId));
+            return ResponseEntity.ok(sectionService.updateSection(id, dto, userId));
         } catch (IllegalArgumentException e) {
             log.error("Update failed: {}", e.getMessage());
             HttpStatus status = e.getMessage().toLowerCase().contains("not found")
                     ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
             return ResponseEntity.status(status).body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
-            log.error("Unexpected error updating subcategory", e);
+            log.error("Unexpected error updating section", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to update subcategory"));
+                    .body(ApiResponse.error("Failed to update section"));
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, @RequestParam Long userId) {
         try {
-            subcategoryService.softDeleteSubcategory(id, userId);
+            sectionService.softDeleteSection(id, userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
             log.error("Delete failed: {}", e.getMessage());
@@ -99,9 +88,9 @@ public class SubcategoryController {
                     ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
             return ResponseEntity.status(status).body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
-            log.error("Unexpected error deleting subcategory", e);
+            log.error("Unexpected error deleting section", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to delete subcategory"));
+                    .body(ApiResponse.error("Failed to delete section"));
         }
     }
 }

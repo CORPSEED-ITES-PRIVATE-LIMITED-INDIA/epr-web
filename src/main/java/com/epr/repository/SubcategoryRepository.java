@@ -1,4 +1,3 @@
-// src/main/java/com/epr/repository/SubcategoryRepository.java
 package com.epr.repository;
 
 import com.epr.entity.Subcategory;
@@ -24,5 +23,8 @@ public interface SubcategoryRepository extends JpaRepository<Subcategory, Long> 
     @Query("SELECT COUNT(s) > 0 FROM Subcategory s WHERE LOWER(s.slug) = LOWER(:slug) AND s.id != :id")
     boolean existsBySlugIgnoreCaseAndIdNot(@Param("slug") String slug, @Param("id") Long id);
 
+    // === ADD THESE TWO METHODS ===
+    List<Subcategory> findByDeleteStatus(int deleteStatus);
 
+    List<Subcategory> findByCategoryIdAndDeleteStatus(Long categoryId, int deleteStatus);
 }

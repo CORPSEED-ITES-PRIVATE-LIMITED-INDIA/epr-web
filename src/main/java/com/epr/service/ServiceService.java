@@ -18,7 +18,6 @@ public interface ServiceService {
 
     void softDeleteService(Long id, Long userId);
 
-    List<ServiceResponseDto> findHomePageServices();
 
     List<ServiceResponseDto> searchServices(String keyword);
 }

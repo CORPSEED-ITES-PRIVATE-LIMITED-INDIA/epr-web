@@ -12,7 +12,6 @@ public class CategoryResponseDto {
     private String name;
     private String slug;
     private String icon;
-    private Integer sequence;
     private String displayStatus;
     private String showHomeStatus;
 

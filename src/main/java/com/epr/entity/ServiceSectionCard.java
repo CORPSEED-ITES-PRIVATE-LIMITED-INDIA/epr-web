@@ -22,7 +22,7 @@ public class ServiceSectionCard {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String icon;  // FontAwesome or image URL
+    private String icon;
 
     @ManyToOne
     @JoinColumn(name = "section_id")

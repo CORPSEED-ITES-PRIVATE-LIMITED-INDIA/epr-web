@@ -1,4 +1,3 @@
-// src/main/java/com/epr/repository/CategoryRepository.java
 package com.epr.repository;
 
 import com.epr.entity.Category;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-
 
     Optional<Category> findByIdAndDeleteStatus(Long id, int deleteStatus);
 
@@ -25,4 +23,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT COUNT(c) > 0 FROM Category c WHERE LOWER(c.slug) = LOWER(:slug) AND c.id != :id")
     boolean existsBySlugIgnoreCaseAndIdNot(@Param("slug") String slug, @Param("id") Long id);
 
+    List<Category> findByDeleteStatus(int deleteStatus);
 }

@@ -49,9 +49,6 @@ public class Services {
     @Column(length = 2, columnDefinition = "int default 2")
     private int showHomeStatus = 2;       // 1 = show on home, 2 = hide
 
-    @Column(name = "sequence_position")
-    private Integer sequence = 0;
-
     private LocalDateTime postDate;
     private LocalDateTime modifyDate;
     private String addedByUUID;

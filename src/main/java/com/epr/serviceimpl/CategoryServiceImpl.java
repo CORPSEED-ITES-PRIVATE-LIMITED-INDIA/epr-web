@@ -1,4 +1,3 @@
-// src/main/java/com/epr/serviceimpl/CategoryServiceImpl.java
 package com.epr.serviceimpl;
 
 import com.epr.dto.category.CategoryRequestDto;
@@ -38,7 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found or account is inactive/deleted"));
     }
 
-
+    @Override
+    public List<CategoryResponseDto> findAllActiveCategories() {
+        return categoryRepository.findByDeleteStatus(2).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public CategoryResponseDto findById(Long id) {

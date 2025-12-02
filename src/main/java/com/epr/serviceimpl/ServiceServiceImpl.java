@@ -48,14 +48,6 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<ServiceResponseDto> findHomePageServices() {
-        return serviceRepository.findHomePageServices()
-                .stream()
-                .map(this::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<ServiceResponseDto> searchServices(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) return findAllActiveServices();
         return serviceRepository.searchActiveServices(keyword.trim())
@@ -190,7 +182,6 @@ public class ServiceServiceImpl implements ServiceService {
 
         entity.setDisplayStatus(dto.getDisplayStatus() != null ? dto.getDisplayStatus() : 1);
         entity.setShowHomeStatus(dto.getShowHomeStatus() != null ? dto.getShowHomeStatus() : 2);
-        entity.setSequence(dto.getSequence() != null ? dto.getSequence() : 0);
     }
 
     private ServiceResponseDto toResponseDto(Services s) {
@@ -210,7 +201,6 @@ public class ServiceServiceImpl implements ServiceService {
 
         dto.setDisplayStatus(s.getDisplayStatus());
         dto.setShowHomeStatus(s.getShowHomeStatus());
-        dto.setSequence(s.getSequence());
 
         dto.setPostDate(dateTimeUtil.formatDateTimeIst(s.getPostDate()));
         dto.setModifyDate(s.getModifyDate() != null ? dateTimeUtil.formatDateTimeIst(s.getModifyDate()) : null);

@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,27 @@ public class SubcategoryServiceImpl implements SubcategoryService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found or inactive"));
     }
 
+    @Override
+    public List<SubcategoryResponseDto> findAllActiveSubcategories() {
+        return subcategoryRepository.findByDeleteStatus(2).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public List<SubcategoryResponseDto> findByCategoryId(Long categoryId) {
+        if (categoryId == null || categoryId <= 0) {
+            throw new IllegalArgumentException("Valid category ID is required");
+        }
+
+        // Optional: validate category exists and is active
+        categoryRepository.findByIdAndDeleteStatus(categoryId, 2)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found or deleted"));
+
+        return subcategoryRepository.findByCategoryIdAndDeleteStatus(categoryId, 2).stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public SubcategoryResponseDto findById(Long id) {
@@ -70,7 +89,6 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         sub.setCategory(category);
         sub.setUuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
         sub.setPostDate(dateTimeUtil.getCurrentUtcTime());
-
         sub.setDeleteStatus(2);
 
         Subcategory saved = subcategoryRepository.save(sub);
@@ -83,7 +101,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         if (id == null || id <= 0) throw new IllegalArgumentException("Invalid subcategory ID");
 
         validateDto(dto);
-        User user = validateAndGetActiveUser(userId);
+        validateAndGetActiveUser(userId);
 
         Subcategory existing = subcategoryRepository.findByIdAndDeleteStatus(id, 2)
                 .orElseThrow(() -> new IllegalArgumentException("Subcategory not found"));
@@ -128,7 +146,7 @@ public class SubcategoryServiceImpl implements SubcategoryService {
         log.info("Subcategory soft deleted: {}", id);
     }
 
-    // Helpers
+    // ================== Helpers ==================
     private void validateDto(SubcategoryRequestDto dto) {
         if (dto == null) throw new IllegalArgumentException("Subcategory data is required");
         if (dto.getName() == null || dto.getName().trim().isEmpty())
@@ -162,7 +180,6 @@ public class SubcategoryServiceImpl implements SubcategoryService {
             dto.setCategoryId(s.getCategory().getId());
             dto.setCategoryName(s.getCategory().getName());
         }
-
         return dto;
     }
 }

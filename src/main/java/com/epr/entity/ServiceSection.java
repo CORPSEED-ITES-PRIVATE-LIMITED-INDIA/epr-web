@@ -1,3 +1,4 @@
+// src/main/java/com/epr/entity/ServiceSection.java
 package com.epr.entity;
 
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ public class ServiceSection {
     private String uuid;
 
     @Column(length = 150, nullable = false)
-    private String tabName;        // e.g., "Overview", "Process", "Documents Required"
+    private String tabName;
 
     @Column(length = 300)
     private String title;
@@ -28,16 +29,17 @@ public class ServiceSection {
     @Column(columnDefinition = "LONGTEXT")
     private String description;
 
-    @Column(length = 3)
+    @Column(length = 3, columnDefinition = "varchar(3) default '1'")
     private String displayOrder = "1";
 
-    @Column(length = 2)
-    private String displayStatus = "1";
+    @Column(columnDefinition = "int default 1")
+    private Integer displayStatus = 1; // 1 = show, 2 = hide
 
     private String postDate;
     private String modifyDate;
     private String addedByUUID;
 
+    // Standardize deleteStatus: 2 = active, 1 = deleted (same as all your other entities)
     @Column(columnDefinition = "int default 2")
     private int deleteStatus = 2;
 
@@ -46,6 +48,5 @@ public class ServiceSection {
     private Services service;
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("id ASC")
     private List<ServiceSectionCard> cards = new ArrayList<>();
 }

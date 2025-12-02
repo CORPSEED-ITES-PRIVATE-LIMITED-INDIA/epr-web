@@ -35,5 +35,4 @@ public class ServiceRequestDto {
 
     private Integer displayStatus = 1;      // default show
     private Integer showHomeStatus = 2;     // default hide on home
-    private Integer sequence = 0;
 }

@@ -23,7 +23,6 @@ public class ServiceResponseDto {
 
     private int displayStatus;
     private int showHomeStatus;
-    private Integer sequence;
 
     private String postDate;     // formatted IST
     private String modifyDate;   // formatted IST
