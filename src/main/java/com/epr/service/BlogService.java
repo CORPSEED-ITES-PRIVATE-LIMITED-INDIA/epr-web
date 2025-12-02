@@ -1,7 +1,7 @@
 package com.epr.service;
 
-import com.epr.dto.blog.BlogRequestDto;
-import com.epr.dto.blog.BlogResponseDto;
+import com.epr.dto.admin.blog.BlogRequestDto;
+import com.epr.dto.admin.blog.BlogResponseDto;
 
 import java.util.List;
 

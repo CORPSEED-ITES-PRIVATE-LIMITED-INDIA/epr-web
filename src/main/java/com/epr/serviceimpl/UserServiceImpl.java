@@ -1,8 +1,8 @@
 // src/main/java/com/epr/serviceimpl/UserServiceImpl.java
 package com.epr.serviceimpl;
 
-import com.epr.dto.user.UserRequestDto;
-import com.epr.dto.user.UserResponseDto;
+import com.epr.dto.admin.user.UserRequestDto;
+import com.epr.dto.admin.user.UserResponseDto;
 import com.epr.entity.Role;
 import com.epr.entity.User;
 import com.epr.repository.RoleRepository;

@@ -1,8 +1,8 @@
 package com.epr.service;
 
 
-import com.epr.dto.servicefaq.ServiceFaqRequestDto;
-import com.epr.dto.servicefaq.ServiceFaqResponseDto;
+import com.epr.dto.admin.servicefaq.ServiceFaqRequestDto;
+import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
 
 import java.util.List;
 

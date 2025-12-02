@@ -1,8 +1,8 @@
 // src/main/java/com/epr/serviceimpl/ServiceSectionServiceImpl.java
 package com.epr.serviceimpl;
 
-import com.epr.dto.servicesection.ServiceSectionRequestDto;
-import com.epr.dto.servicesection.ServiceSectionResponseDto;
+import com.epr.dto.admin.servicesection.ServiceSectionRequestDto;
+import com.epr.dto.admin.servicesection.ServiceSectionResponseDto;
 import com.epr.entity.ServiceSection;
 import com.epr.entity.Services;
 import com.epr.entity.User;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

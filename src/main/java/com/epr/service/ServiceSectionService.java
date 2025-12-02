@@ -1,8 +1,8 @@
 // src/main/java/com/epr/service/ServiceSectionService.java
 package com.epr.service;
 
-import com.epr.dto.servicesection.ServiceSectionRequestDto;
-import com.epr.dto.servicesection.ServiceSectionResponseDto;
+import com.epr.dto.admin.servicesection.ServiceSectionRequestDto;
+import com.epr.dto.admin.servicesection.ServiceSectionResponseDto;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 // src/main/java/com/epr/serviceimpl/SubcategoryServiceImpl.java
 package com.epr.serviceimpl;
 
-import com.epr.dto.subcategory.SubcategoryRequestDto;
-import com.epr.dto.subcategory.SubcategoryResponseDto;
+import com.epr.dto.admin.subcategory.SubcategoryRequestDto;
+import com.epr.dto.admin.subcategory.SubcategoryResponseDto;
 import com.epr.entity.Category;
 import com.epr.entity.Subcategory;
 import com.epr.entity.User;

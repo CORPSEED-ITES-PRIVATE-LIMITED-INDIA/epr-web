@@ -1,10 +1,8 @@
 package com.epr.service;
 
 
-import com.epr.dto.blogfaq.BlogFaqRequestDto;
-import com.epr.dto.blogfaq.BlogFaqResponseDto;
-
-import java.util.List;
+import com.epr.dto.admin.blogfaq.BlogFaqRequestDto;
+import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 
 public interface BlogFaqService {
 

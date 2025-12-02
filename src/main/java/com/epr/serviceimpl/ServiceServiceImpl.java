@@ -1,8 +1,8 @@
 // src/main/java/com/epr/serviceimpl/ServiceServiceImpl.java
 package com.epr.serviceimpl;
 
-import com.epr.dto.service.ServiceRequestDto;
-import com.epr.dto.service.ServiceResponseDto;
+import com.epr.dto.admin.service.ServiceRequestDto;
+import com.epr.dto.admin.service.ServiceResponseDto;
 import com.epr.entity.Category;
 import com.epr.entity.Services;
 import com.epr.entity.Subcategory;

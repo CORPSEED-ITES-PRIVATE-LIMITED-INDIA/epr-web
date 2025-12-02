@@ -1,7 +1,7 @@
 package com.epr.serviceimpl;
 
-import com.epr.dto.enquiry.EnquiryRequestDto;
-import com.epr.dto.enquiry.EnquiryResponseDto;
+import com.epr.dto.admin.enquiry.EnquiryRequestDto;
+import com.epr.dto.admin.enquiry.EnquiryResponseDto;
 import com.epr.entity.Enquiry;
 import com.epr.entity.User;
 import com.epr.repository.EnquiryRepository;
@@ -11,8 +11,6 @@ import com.epr.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

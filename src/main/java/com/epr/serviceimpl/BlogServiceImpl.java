@@ -1,8 +1,8 @@
 package com.epr.serviceimpl;
 
 
-import com.epr.dto.blog.BlogRequestDto;
-import com.epr.dto.blog.BlogResponseDto;
+import com.epr.dto.admin.blog.BlogRequestDto;
+import com.epr.dto.admin.blog.BlogResponseDto;
 import com.epr.entity.Blogs;
 import com.epr.entity.Category;
 import com.epr.entity.Services;

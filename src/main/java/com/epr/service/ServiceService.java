@@ -1,8 +1,8 @@
 // src/main/java/com/epr/service/ServiceService.java
 package com.epr.service;
 
-import com.epr.dto.service.ServiceRequestDto;
-import com.epr.dto.service.ServiceResponseDto;
+import com.epr.dto.admin.service.ServiceRequestDto;
+import com.epr.dto.admin.service.ServiceResponseDto;
 
 import java.util.List;
 

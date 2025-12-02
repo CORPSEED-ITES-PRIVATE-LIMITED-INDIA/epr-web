@@ -2,10 +2,8 @@ package com.epr.service;
 
 
 
-import com.epr.dto.enquiry.EnquiryRequestDto;
-import com.epr.dto.enquiry.EnquiryResponseDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.epr.dto.admin.enquiry.EnquiryRequestDto;
+import com.epr.dto.admin.enquiry.EnquiryResponseDto;
 
 import java.util.List;
 

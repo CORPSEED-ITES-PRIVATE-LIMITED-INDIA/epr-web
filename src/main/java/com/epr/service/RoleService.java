@@ -1,9 +1,8 @@
 // src/main/java/com/epr/service/RoleService.java
 package com.epr.service;
 
-import com.epr.dto.role.RoleRequestDto;
-import com.epr.dto.role.RoleResponseDto;
-import com.epr.entity.Role;
+import com.epr.dto.admin.role.RoleRequestDto;
+import com.epr.dto.admin.role.RoleResponseDto;
 
 import java.util.List;
 

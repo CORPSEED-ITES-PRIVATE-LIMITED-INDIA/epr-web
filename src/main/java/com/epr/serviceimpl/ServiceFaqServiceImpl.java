@@ -1,8 +1,8 @@
 package com.epr.serviceimpl;
 
 
-import com.epr.dto.servicefaq.ServiceFaqRequestDto;
-import com.epr.dto.servicefaq.ServiceFaqResponseDto;
+import com.epr.dto.admin.servicefaq.ServiceFaqRequestDto;
+import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
 import com.epr.entity.ServiceFaq;
 import com.epr.entity.Services;
 import com.epr.entity.User;

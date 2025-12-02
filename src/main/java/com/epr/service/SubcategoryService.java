@@ -1,8 +1,8 @@
 // src/main/java/com/epr/service/SubcategoryService.java
 package com.epr.service;
 
-import com.epr.dto.subcategory.SubcategoryRequestDto;
-import com.epr.dto.subcategory.SubcategoryResponseDto;
+import com.epr.dto.admin.subcategory.SubcategoryRequestDto;
+import com.epr.dto.admin.subcategory.SubcategoryResponseDto;
 
 import java.util.List;
 

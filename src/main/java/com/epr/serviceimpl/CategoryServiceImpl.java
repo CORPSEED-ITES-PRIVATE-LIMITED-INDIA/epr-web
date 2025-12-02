@@ -1,7 +1,7 @@
 package com.epr.serviceimpl;
 
-import com.epr.dto.category.CategoryRequestDto;
-import com.epr.dto.category.CategoryResponseDto;
+import com.epr.dto.admin.category.CategoryRequestDto;
+import com.epr.dto.admin.category.CategoryResponseDto;
 import com.epr.entity.Category;
 import com.epr.entity.User;
 import com.epr.repository.CategoryRepository;

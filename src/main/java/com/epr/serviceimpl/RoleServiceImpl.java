@@ -1,7 +1,7 @@
 package com.epr.serviceimpl;
 
-import com.epr.dto.role.RoleRequestDto;
-import com.epr.dto.role.RoleResponseDto;
+import com.epr.dto.admin.role.RoleRequestDto;
+import com.epr.dto.admin.role.RoleResponseDto;
 import com.epr.entity.Role;
 import com.epr.repository.RoleRepository;
 import com.epr.service.RoleService;
