@@ -1,9 +1,12 @@
+// src/main/java/com/epr/service/UserService.java
 package com.epr.service;
 
 import com.epr.dto.user.UserRequestDto;
 import com.epr.dto.user.UserResponseDto;
+import com.epr.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<UserResponseDto> findAllActiveUsers();
@@ -18,5 +21,5 @@ public interface UserService {
 
     List<UserResponseDto> searchUsers(String keyword);
 
-
+    Optional<User> findByEmail(String email);
 }

@@ -1,3 +1,4 @@
+// src/main/java/com/epr/serviceimpl/UserServiceImpl.java
 package com.epr.serviceimpl;
 
 import com.epr.dto.user.UserRequestDto;
@@ -17,18 +18,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -123,7 +129,6 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
         }
 
-
         String displayStatus = dto.getDisplayStatus();
         if (displayStatus != null && displayStatus.length() > 20) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "display_status too long");
@@ -172,7 +177,34 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    // Helper Methods
+    @Override
+    public Optional<User> findByEmail(String email) {
+        log.info("Fetching user by email: {}", email);
+        return userRepository.findByEmailIgnoreCaseAndDeleteStatus(email, 2);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("Loading user details for email: {}", email);
+        User user = userRepository.findByEmailIgnoreCaseAndDeleteStatus(email, 2)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+        var authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName()))
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                user.getDeleteStatus() == 2, // enabled if not deleted
+                true, // account non-expired
+                true, // credentials non-expired
+                true, // account non-locked
+                authorities
+        );
+    }
+
+    // Helper Methods (unchanged)
     private void validateDto(UserRequestDto dto) {
         Set<ConstraintViolation<UserRequestDto>> violations = validator.validate(dto);
         if (!violations.isEmpty()) {
