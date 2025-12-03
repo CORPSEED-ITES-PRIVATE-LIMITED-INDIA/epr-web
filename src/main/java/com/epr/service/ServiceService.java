@@ -32,4 +32,8 @@ public interface ServiceService {
     List<ServiceCustomerDto> findActiveBySubcategoryId(Long subcategoryId);
 
     List<ServiceCustomerDto> findLatestActiveServices(int i);
+
+    List<ServiceResponseDto> findActivePublicServicesBySubcategoryId(Long subcategoryId);
+
+
 }

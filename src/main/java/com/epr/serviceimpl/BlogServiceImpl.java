@@ -3,6 +3,7 @@ package com.epr.serviceimpl;
 
 import com.epr.dto.admin.blog.BlogRequestDto;
 import com.epr.dto.admin.blog.BlogResponseDto;
+import com.epr.dto.customer.BlogCustomerDto;
 import com.epr.entity.Blogs;
 import com.epr.entity.Category;
 import com.epr.entity.Services;
@@ -14,6 +15,8 @@ import com.epr.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -180,6 +183,74 @@ public class BlogServiceImpl implements BlogService {
         }
     }
 
+
+    @Override
+    public List<BlogCustomerDto> findAllPublicBlogs() {
+        return blogRepository.findAllByDeleteStatusAndDisplayStatus(2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BlogCustomerDto findPublicBySlugAndIncrementVisit(String slug) {
+        if (slug == null || slug.trim().isEmpty()) return null;
+
+        Blogs blog = blogRepository.findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(slug.trim().toLowerCase(), 2, 1)
+                .orElse(null);
+
+        if (blog != null) {
+            blog.setVisited(blog.getVisited() + 1);
+            blogRepository.save(blog); // async in production
+        }
+        return blog != null ? toCustomerDto(blog) : null;
+    }
+
+    @Override
+    public List<BlogCustomerDto> findLatestPublicBlogs(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return blogRepository.findLatestPublicBlogs(pageable)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogCustomerDto> findPublicByCategoryId(Long categoryId) {
+        if (categoryId == null || categoryId <= 0) return List.of();
+        return blogRepository.findByCategoryIdAndDeleteStatusAndDisplayStatus(categoryId, 2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogCustomerDto> findPublicBySubcategoryId(Long subcategoryId) {
+        if (subcategoryId == null || subcategoryId <= 0) return List.of();
+        return blogRepository.findBySubcategoryIdAndDeleteStatusAndDisplayStatus(subcategoryId, 2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogCustomerDto> searchPublicBlogs(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) return findAllPublicBlogs();
+        return blogRepository.searchActiveBlogs(keyword.trim())
+                .stream()
+                .filter(b -> b.getDisplayStatus() == 1)
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogCustomerDto> findFeaturedPublicBlogs() {
+        return blogRepository.findByShowHomeStatusAndDeleteStatusAndDisplayStatus(1, 2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
     private void mapRequestToEntity(BlogRequestDto dto, Blogs entity) {
         entity.setTitle(dto.getTitle().trim());
         entity.setSlug(dto.getSlug().trim().toLowerCase());
@@ -224,6 +295,39 @@ public class BlogServiceImpl implements BlogService {
 
         dto.setServiceIds(b.getServices().stream().map(Services::getId).collect(Collectors.toList()));
         dto.setServiceTitles(b.getServices().stream().map(Services::getTitle).collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    private BlogCustomerDto toCustomerDto(Blogs b) {
+        BlogCustomerDto dto = new BlogCustomerDto();
+        dto.setId(b.getId());
+        dto.setUuid(b.getUuid());
+        dto.setTitle(b.getTitle());
+        dto.setSlug(b.getSlug());
+        dto.setImage(b.getImage());
+        dto.setSummary(b.getSummary());
+        dto.setDescription(b.getDescription());
+        dto.setMetaTitle(b.getMetaTitle());
+        dto.setMetaKeyword(b.getMetaKeyword());
+        dto.setMetaDescription(b.getMetaDescription());
+        dto.setPostDate(dateTimeUtil.formatDateTimeIst(b.getPostDate()));
+        dto.setPostedByName(b.getPostedByName());
+        dto.setVisited(b.getVisited());
+
+        if (b.getCategory() != null) {
+            dto.setCategoryId(b.getCategory().getId());
+            dto.setCategoryName(b.getCategory().getName());
+            dto.setCategorySlug(b.getCategory().getSlug());
+        }
+        if (b.getSubcategory() != null) {
+            dto.setSubcategoryId(b.getSubcategory().getId());
+            dto.setSubcategoryName(b.getSubcategory().getName());
+            dto.setSubcategorySlug(b.getSubcategory().getSlug());
+        }
+        dto.setRelatedServiceTitles(b.getServices().stream()
+                .map(Services::getTitle)
+                .collect(Collectors.toList()));
 
         return dto;
     }

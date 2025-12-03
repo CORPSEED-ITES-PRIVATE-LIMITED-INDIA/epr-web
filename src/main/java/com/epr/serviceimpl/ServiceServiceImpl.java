@@ -316,5 +316,18 @@ public class ServiceServiceImpl implements ServiceService {
         return dto;
     }
 
+    @Override
+    public List<ServiceResponseDto> findActivePublicServicesBySubcategoryId(Long subcategoryId) {
+        if (subcategoryId == null || subcategoryId <= 0) {
+            return List.of();
+        }
+
+        return serviceRepository
+                .findBySubcategoryIdAndDeleteStatusAndDisplayStatus(subcategoryId, 2, 1) // active + visible
+                .stream()
+                .map(this::toResponseDto)  // Reuse your existing admin mapper → returns ServiceResponseDto
+                .collect(Collectors.toList());
+    }
+
 
 }

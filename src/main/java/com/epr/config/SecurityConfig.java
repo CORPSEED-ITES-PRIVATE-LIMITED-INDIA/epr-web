@@ -40,7 +40,8 @@ public class SecurityConfig {
                         // === PUBLIC API ENDPOINTS - NO AUTH REQUIRED ===
                         .requestMatchers("/services/**").permitAll()           // This is what you need
                         .requestMatchers("/api/public/**").permitAll()         // if you have other public APIs later
-                        .requestMatchers("/api/**").permitAll()                 // optional - remove if you want to lock down other /api later
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/blogs").permitAll()// optional - remove if you want to lock down other /api later
 
                         // Everything else requires authentication
                         .anyRequest().authenticated()
@@ -56,7 +57,7 @@ public class SecurityConfig {
                 )
                 // Disable CSRF only for APIs that are truly stateless or used by external clients
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**", "/services/**")   // Add /services here too if needed
+                        .ignoringRequestMatchers("/api/**", "/services/**","/blogs")   // Add /services here too if needed
                 );
 
         return http.build();

@@ -96,4 +96,24 @@ public class ServiceController {
             return ResponseEntity.status(500).body(ApiResponse.error("Failed to delete service", 500));
         }
     }
+
+
+
+    // Add to your existing ServiceController or create a new PublicServiceController
+
+    @GetMapping("/public/subcategory/{subcategoryId}/services")
+    public ResponseEntity<List<ServiceResponseDto>> getActiveServicesBySubcategory(
+            @PathVariable Long subcategoryId) {
+
+        if (subcategoryId == null || subcategoryId <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<ServiceResponseDto> services = serviceService.findActivePublicServicesBySubcategoryId(subcategoryId);
+
+        return services.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(services);
+    }
+
 }

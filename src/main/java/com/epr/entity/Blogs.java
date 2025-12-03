@@ -79,6 +79,9 @@ public class Blogs {
     @Column(columnDefinition = "int default 2")
     private int deleteStatus = 2;
 
+    @Column(name = "show_home_status", columnDefinition = "int default 2")
+    private Integer showHomeStatus = 2; // 1 = show on home, 2 = don't show
+
     @Column(columnDefinition = "TEXT")
     private String searchKeyword;
 
