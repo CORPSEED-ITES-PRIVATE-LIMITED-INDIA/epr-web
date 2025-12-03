@@ -3,6 +3,7 @@ package com.epr.serviceimpl;
 
 import com.epr.dto.admin.service.ServiceRequestDto;
 import com.epr.dto.admin.service.ServiceResponseDto;
+import com.epr.dto.customer.ServiceCustomerDto;
 import com.epr.entity.Category;
 import com.epr.entity.Services;
 import com.epr.entity.Subcategory;
@@ -216,5 +217,104 @@ public class ServiceServiceImpl implements ServiceService {
             dto.setSubcategoryName(s.getSubcategory().getName());
         }
         return dto;
+
     }
+
+
+    @Override
+    public List<ServiceCustomerDto> findAllActivePublicServices() {
+        return serviceRepository.findAllActiveServices()
+                .stream()
+                .filter(s -> s.getDisplayStatus() == 1) // Only visible services
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ServiceCustomerDto findActiveBySlug(String slug) {
+        if (slug == null || slug.trim().isEmpty()) return null;
+
+        return serviceRepository.findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(slug.trim().toLowerCase(), 2, 1)
+                .map(this::toCustomerDto)
+                .orElse(null);
+    }
+
+    @Override
+    public List<ServiceCustomerDto> findActiveByCategoryId(Long categoryId) {
+        if (categoryId == null || categoryId <= 0) return List.of();
+
+        return serviceRepository.findByCategoryIdAndDeleteStatusAndDisplayStatus(categoryId, 2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ServiceCustomerDto> findActiveBySubcategoryId(Long subcategoryId) {
+        if (subcategoryId == null || subcategoryId <= 0) {
+            return List.of();
+        }
+        return serviceRepository.findBySubcategoryIdAndDeleteStatusAndDisplayStatus(subcategoryId, 2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ServiceCustomerDto> findLatestActiveServices(int limit) {
+        return serviceRepository.findTopNActiveAndVisibleServices(limit)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ServiceCustomerDto> searchPublicServices(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return findAllActivePublicServices();
+        }
+        return serviceRepository.searchActivePublicServices(keyword.trim())
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ServiceCustomerDto> findFeaturedServices() {
+        return serviceRepository.findByShowHomeStatusAndDeleteStatusAndDisplayStatus(1, 2, 1)
+                .stream()
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
+
+    private ServiceCustomerDto toCustomerDto(Services s) {
+        ServiceCustomerDto dto = new ServiceCustomerDto();
+        dto.setId(s.getId());
+        dto.setUuid(s.getUuid());
+        dto.setTitle(s.getTitle());
+        dto.setSlug(s.getSlug());
+        dto.setShortDescription(s.getShortDescription());
+        dto.setBannerImage(s.getBannerImage());
+        dto.setThumbnail(s.getThumbnail());
+        dto.setVideoUrl(s.getVideoUrl());
+        dto.setMetaTitle(s.getMetaTitle());
+        dto.setMetaKeyword(s.getMetaKeyword());
+        dto.setMetaDescription(s.getMetaDescription());
+        dto.setPostDate(dateTimeUtil.formatDateTimeIst(s.getPostDate()));
+
+        if (s.getCategory() != null) {
+            dto.setCategoryId(s.getCategory().getId());
+            dto.setCategoryName(s.getCategory().getName());
+            dto.setCategorySlug(s.getCategory().getSlug());
+        }
+        if (s.getSubcategory() != null) {
+            dto.setSubcategoryId(s.getSubcategory().getId());
+            dto.setSubcategoryName(s.getSubcategory().getName());
+            dto.setSubcategorySlug(s.getSubcategory().getSlug());
+        }
+        return dto;
+    }
+
+
 }

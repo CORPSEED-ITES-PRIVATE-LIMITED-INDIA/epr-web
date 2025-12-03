@@ -3,6 +3,7 @@ package com.epr.service;
 
 import com.epr.dto.admin.service.ServiceRequestDto;
 import com.epr.dto.admin.service.ServiceResponseDto;
+import com.epr.dto.customer.ServiceCustomerDto;
 
 import java.util.List;
 
@@ -20,4 +21,15 @@ public interface ServiceService {
 
 
     List<ServiceResponseDto> searchServices(String keyword);
+
+    List<ServiceCustomerDto> findAllActivePublicServices();
+    ServiceCustomerDto findActiveBySlug(String slug);
+    List<ServiceCustomerDto> findActiveByCategoryId(Long categoryId);
+    List<ServiceCustomerDto> searchPublicServices(String keyword);
+    List<ServiceCustomerDto> findFeaturedServices(); // showHomeStatus = 1
+
+
+    List<ServiceCustomerDto> findActiveBySubcategoryId(Long subcategoryId);
+
+    List<ServiceCustomerDto> findLatestActiveServices(int i);
 }

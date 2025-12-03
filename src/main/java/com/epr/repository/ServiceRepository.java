@@ -35,4 +35,52 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
     // Alternative (cleaner & more efficient) using @Query - RECOMMENDED
     @Query("SELECT s FROM Services s WHERE s.id IN :ids AND s.deleteStatus = :deleteStatus")
     List<Services> findAllByIdInAndDeleteStatus(@Param("ids") List<Long> ids, @Param("deleteStatus") int deleteStatus);
+
+
+
+    // Add these to ServiceRepository.java
+
+    Optional<Services> findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(
+            String slug, int deleteStatus, int displayStatus);
+
+    @Query("SELECT s FROM Services s WHERE s.category.id = :categoryId " +
+            "AND s.deleteStatus = :deleteStatus AND s.displayStatus = :displayStatus")
+    List<Services> findByCategoryIdAndDeleteStatusAndDisplayStatus(
+            @Param("categoryId") Long categoryId,
+            @Param("deleteStatus") int deleteStatus,
+            @Param("displayStatus") int displayStatus);
+
+    @Query("SELECT s FROM Services s WHERE s.showHomeStatus = :showHome " +
+            "AND s.deleteStatus = :deleteStatus AND s.displayStatus = :displayStatus " +
+            "ORDER BY s.postDate DESC")
+    List<Services> findByShowHomeStatusAndDeleteStatusAndDisplayStatus(
+            @Param("showHome") int showHomeStatus,
+            @Param("deleteStatus") int deleteStatus,
+            @Param("displayStatus") int displayStatus);
+
+    @Query("SELECT s FROM Services s WHERE s.deleteStatus = 2 AND s.displayStatus = 1 " +
+            "AND (LOWER(s.title) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(s.shortDescription) LIKE LOWER(CONCAT('%', :keyword, '%')))" +
+            "ORDER BY s.postDate DESC")
+    List<Services> searchActivePublicServices(@Param("keyword") String keyword);
+
+
+    // For subcategory
+    @Query("SELECT s FROM Services s WHERE s.subcategory.id = :subcategoryId " +
+            "AND s.deleteStatus = :deleteStatus AND s.displayStatus = :displayStatus " +
+            "ORDER BY s.postDate DESC")
+    List<Services> findBySubcategoryIdAndDeleteStatusAndDisplayStatus(
+            @Param("subcategoryId") Long subcategoryId,
+            @Param("deleteStatus") int deleteStatus,
+            @Param("displayStatus") int displayStatus);
+
+    // For latest N services
+    @Query("SELECT s FROM Services s " +
+            "WHERE s.deleteStatus = 2 AND s.displayStatus = 1 " +
+            "ORDER BY s.postDate DESC")
+    List<Services> findTopNActiveAndVisibleServices(@Param("limit") int limit);
+
+
+
+
 }

@@ -29,9 +29,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
+                        // Static resources
+                        .requestMatchers("/", "/login", "/register",
+                                "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+
+                        // Swagger / OpenAPI docs
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html",
+                                "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+
+                        // === PUBLIC API ENDPOINTS - NO AUTH REQUIRED ===
+                        .requestMatchers("/services/**").permitAll()           // This is what you need
+                        .requestMatchers("/api/public/**").permitAll()         // if you have other public APIs later
+                        .requestMatchers("/api/**").permitAll()                 // optional - remove if you want to lock down other /api later
+
+                        // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -43,7 +54,10 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
+                // Disable CSRF only for APIs that are truly stateless or used by external clients
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**", "/services/**")   // Add /services here too if needed
+                );
 
         return http.build();
     }
