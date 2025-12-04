@@ -12,9 +12,8 @@ public class EnquiryResponseDto {
     private String name;
     private String email;
     private String mobile;
+    private  String location;
     private String city;
-    private Long categoryId;
-    private Long serviceId;
     private String url;
     private String ipAddress;
     private String utmSource;

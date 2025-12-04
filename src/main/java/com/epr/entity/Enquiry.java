@@ -28,6 +28,8 @@ public class Enquiry {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    private  String location;
+
     @NotBlank(message = "Please enter your name !!")
     @Column(length = 255, nullable = false)
     private String name;

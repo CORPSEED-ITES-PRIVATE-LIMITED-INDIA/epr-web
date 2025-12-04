@@ -50,6 +50,8 @@ public class CustomerBlogController {
         return ResponseEntity.ok(blogService.searchPublicBlogs(q.trim()));
     }
 
+
+
     @GetMapping("/featured")
     public ResponseEntity<List<BlogCustomerDto>> getFeaturedBlogs() {
         return ResponseEntity.ok(blogService.findFeaturedPublicBlogs());

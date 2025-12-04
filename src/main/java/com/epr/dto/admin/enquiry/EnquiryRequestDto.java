@@ -11,18 +11,15 @@ public class EnquiryRequestDto {
 
     private String type;
     private String message;
-
      private String name;
-
      @Email private String email;
+
+     private  String location;
 
      @Size(min = 10, max = 15)
      private String mobile;
 
      private String city;
-
-    private Long categoryId;
-    private Long serviceId;
 
     private String utmSource;
     private String utmMedium;

@@ -86,16 +86,13 @@ public class EnquiryServiceImpl implements EnquiryService {
         enquiry.setEmail(email);
         enquiry.setMobile(mobile);
         enquiry.setCity(dto.getCity() != null ? dto.getCity().trim() : null);
-        enquiry.setCategoryId(dto.getCategoryId());
-        enquiry.setServiceId(dto.getServiceId());
-
         // UTM
         enquiry.setUtmSource(dto.getUtmSource());
         enquiry.setUtmMedium(dto.getUtmMedium());
         enquiry.setUtmCampaign(dto.getUtmCampaign());
         enquiry.setUtmTerm(dto.getUtmTerm());
         enquiry.setUtmContent(dto.getUtmContent());
-
+        enquiry.setLocation(dto.getLocation());
         enquiry.setIpAddress(ipAddress);
         enquiry.setUrl(url);
         enquiry.setDisplayStatus(1);
@@ -114,9 +111,8 @@ public class EnquiryServiceImpl implements EnquiryService {
         existing.setMessage(dto.getMessage());
         if (dto.getName() != null) existing.setName(dto.getName().trim());
         if (dto.getCity() != null) existing.setCity(dto.getCity().trim());
-        existing.setCategoryId(dto.getCategoryId());
-        existing.setServiceId(dto.getServiceId());
         existing.setUtmSource(dto.getUtmSource());
+        existing.setLocation(dto.getLocation());
         existing.setUtmMedium(dto.getUtmMedium());
         existing.setUtmCampaign(dto.getUtmCampaign());
         existing.setUtmTerm(dto.getUtmTerm());
@@ -166,8 +162,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         dto.setEmail(e.getEmail());
         dto.setMobile(e.getMobile());
         dto.setCity(e.getCity());
-        dto.setCategoryId(e.getCategoryId());
-        dto.setServiceId(e.getServiceId());
+        dto.setLocation(e.getLocation());
         dto.setUrl(e.getUrl());
         dto.setIpAddress(e.getIpAddress());
         dto.setUtmSource(e.getUtmSource());

@@ -37,6 +37,7 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto loginRequest,
                                    HttpServletRequest request) {
 
+
         try {
             // Perform authentication
             Authentication authentication = authenticationManager.authenticate(
@@ -72,19 +73,28 @@ public class AuthController {
                     .header("X-Session-Id", session.getId())
                     .body(response);
 
-        } catch (Exception e) {
+
+        }
+
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid email or password"));
         }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        request.getSession().invalidate();
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // do NOT create new session
+        if (session != null) {
+            session.invalidate();
+        }
         SecurityContextHolder.clearContext();
-        return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
-    }
 
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Logged out successfully");
+
+        return ResponseEntity.ok(response);
+    }
     // Helper to convert User entity → DTO (reuse logic or copy from service)
     private UserResponseDto convertToResponseDto(User user) {
         UserResponseDto dto = new UserResponseDto();
