@@ -3,6 +3,7 @@ package com.epr.serviceimpl;
 
 import com.epr.dto.admin.blog.BlogRequestDto;
 import com.epr.dto.admin.blog.BlogResponseDto;
+import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 import com.epr.dto.customer.BlogCustomerDto;
 import com.epr.entity.Blogs;
 import com.epr.entity.Category;
@@ -10,6 +11,7 @@ import com.epr.entity.Services;
 import com.epr.entity.Subcategory;
 import com.epr.entity.User;
 import com.epr.repository.*;
+import com.epr.service.BlogFaqService;
 import com.epr.service.BlogService;
 import com.epr.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,8 @@ public class BlogServiceImpl implements BlogService {
     private final SubcategoryRepository subcategoryRepository;
     private final ServiceRepository serviceRepository;
     private final DateTimeUtil dateTimeUtil;
+    private final BlogFaqService blogFaqService;
+
 
     private User validateAndGetActiveUser(Long userId) {
         if (userId == null || userId <= 0) throw new IllegalArgumentException("User ID is required");
@@ -354,5 +358,24 @@ public class BlogServiceImpl implements BlogService {
                 .map(this::toCustomerDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<BlogFaqResponseDto> findFaqsByBlogSlug(String slug) {
+        if (slug == null || slug.trim().isEmpty()) {
+            throw new IllegalArgumentException("Blog slug is required");
+        }
+
+        Blogs blog = blogRepository
+                .findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(slug.trim().toLowerCase(), 2, 1)
+                .orElseThrow(() -> new IllegalArgumentException("Blog not found or not visible: " + slug));
+
+        // Reuse existing logic from BlogFaqService
+        // Assuming BlogFaqService has a method to get FAQs by blogId
+        return blogFaqService.findByBlogId(blog.getId())
+                .stream()
+                .filter(faq -> faq.getDisplayStatus() == 1) // Only visible FAQs
+                .collect(Collectors.toList());
+    }
+
 
 }

@@ -48,4 +48,5 @@ public class BlogFaq {
     @JoinColumn(name = "blog_id", nullable = false)
     private Blogs blog;
 
+
 }

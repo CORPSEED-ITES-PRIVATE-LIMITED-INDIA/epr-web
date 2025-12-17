@@ -4,6 +4,8 @@ package com.epr.service;
 import com.epr.dto.admin.blogfaq.BlogFaqRequestDto;
 import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 
+import java.util.List;
+
 public interface BlogFaqService {
 
 
@@ -12,4 +14,6 @@ public interface BlogFaqService {
     BlogFaqResponseDto updateFaq(Long blogId, Long faqId, BlogFaqRequestDto dto, Long userId);
 
     void softDeleteFaq(Long blogId, Long faqId, Long userId);
+
+    List<BlogFaqResponseDto> findByBlogId(Long blogId);
 }

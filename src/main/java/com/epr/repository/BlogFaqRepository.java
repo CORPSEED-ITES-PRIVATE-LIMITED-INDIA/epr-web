@@ -13,4 +13,9 @@ public interface BlogFaqRepository extends JpaRepository<BlogFaq, Long> {
 
     @Query("SELECT f FROM BlogFaq f WHERE f.blog.id = :blogId AND f.id = :faqId AND f.deleteStatus = 2")
     Optional<BlogFaq> findActiveByBlogIdAndId(@Param("blogId") Long blogId, @Param("faqId") Long faqId);
+
+    @Query("SELECT f FROM BlogFaq f WHERE f.blog.id = :blogId AND f.deleteStatus = :deleteStatus ORDER BY f.id ASC")
+    List<BlogFaq> findByBlogIdAndDeleteStatusOrderByIdAsc(
+            @Param("blogId") Long blogId,
+            @Param("deleteStatus") int deleteStatus);
 }
