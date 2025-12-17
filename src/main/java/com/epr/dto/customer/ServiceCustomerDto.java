@@ -1,9 +1,10 @@
-// src/main/java/com/epr/dto/customer/ServiceCustomerDto.java
 package com.epr.dto.customer;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class ServiceCustomerDto {
     private Long id;
     private String uuid;
@@ -26,5 +27,8 @@ public class ServiceCustomerDto {
     private String subcategoryName;
     private String subcategorySlug;
 
-    private String postDate; // formatted IST
+    private String postDate;
+
+    private int showInFooter;
+    private int footerOrder;
 }

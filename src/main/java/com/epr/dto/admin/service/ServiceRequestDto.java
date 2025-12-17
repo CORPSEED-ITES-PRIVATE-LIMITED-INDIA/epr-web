@@ -1,10 +1,10 @@
-// src/main/java/com/epr/dto/service/ServiceRequestDto.java
 package com.epr.dto.admin.service;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter @Setter
 public class ServiceRequestDto {
@@ -28,11 +28,14 @@ public class ServiceRequestDto {
     private String thumbnail;
     private String videoUrl;
 
-    // SEO
     private String metaTitle;
     private String metaKeyword;
     private String metaDescription;
 
-    private Integer displayStatus = 1;      // default show
-    private Integer showHomeStatus = 2;     // default hide on home
+    private Integer displayStatus = 1;
+    private Integer showHomeStatus = 2;
+
+    // ADD THESE TWO FIELDS
+    private Integer showInFooter = 2;  // 1 = show in footer, 2 = hide (default)
+    private Integer footerOrder = 0;   // order number (0,1,2,3...)
 }

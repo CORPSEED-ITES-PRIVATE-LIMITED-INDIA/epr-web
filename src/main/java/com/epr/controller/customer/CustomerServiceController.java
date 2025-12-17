@@ -68,11 +68,10 @@ public class CustomerServiceController {
                 : ResponseEntity.ok(services);
     }
 
-    // 5. NEW: Latest 10 recently posted services
     @GetMapping("/latest")
     public ResponseEntity<List<ServiceCustomerDto>> getLatestServices() {
         List<ServiceCustomerDto> services = serviceService.findLatestActiveServices(10);
-        return ResponseEntity.ok(services); // Always return 200 + empty list if none
+        return ResponseEntity.ok(services);
     }
 
 

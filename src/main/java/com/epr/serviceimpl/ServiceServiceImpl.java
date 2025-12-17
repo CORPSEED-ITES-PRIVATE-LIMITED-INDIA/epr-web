@@ -174,6 +174,7 @@ public class ServiceServiceImpl implements ServiceService {
         }
     }
 
+
     private void mapRequestToEntity(ServiceRequestDto dto, Services entity) {
         entity.setTitle(dto.getTitle().trim());
         entity.setSlug(dto.getSlug().trim().toLowerCase());
@@ -189,6 +190,10 @@ public class ServiceServiceImpl implements ServiceService {
 
         entity.setDisplayStatus(dto.getDisplayStatus() != null ? dto.getDisplayStatus() : 1);
         entity.setShowHomeStatus(dto.getShowHomeStatus() != null ? dto.getShowHomeStatus() : 2);
+
+        // ADD THESE TWO LINES
+        entity.setShowInFooter(dto.getShowInFooter() != null ? dto.getShowInFooter() : 2);
+        entity.setFooterOrder(dto.getFooterOrder() != null ? dto.getFooterOrder() : 0);
     }
 
     private ServiceResponseDto toResponseDto(Services s) {
@@ -205,6 +210,8 @@ public class ServiceServiceImpl implements ServiceService {
         dto.setMetaTitle(s.getMetaTitle());
         dto.setMetaKeyword(s.getMetaKeyword());
         dto.setMetaDescription(s.getMetaDescription());
+        dto.setShowInFooter(s.getShowInFooter());
+        dto.setFooterOrder(s.getFooterOrder());
 
         dto.setDisplayStatus(s.getDisplayStatus());
         dto.setShowHomeStatus(s.getShowHomeStatus());
@@ -308,6 +315,8 @@ public class ServiceServiceImpl implements ServiceService {
         dto.setMetaKeyword(s.getMetaKeyword());
         dto.setMetaDescription(s.getMetaDescription());
         dto.setPostDate(dateTimeUtil.formatDateTimeIst(s.getPostDate()));
+        dto.setShowInFooter(s.getShowInFooter());
+        dto.setFooterOrder(s.getFooterOrder());
 
         if (s.getCategory() != null) {
             dto.setCategoryId(s.getCategory().getId());
