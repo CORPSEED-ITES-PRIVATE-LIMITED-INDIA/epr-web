@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -343,4 +344,15 @@ public class BlogServiceImpl implements BlogService {
 
         return dto;
     }
+
+
+    public List<BlogCustomerDto> findFooterBlogs() {
+        return blogRepository.findByShowInFooterAndDeleteStatusAndDisplayStatus(1, 2, 1,
+                        Sort.by("footerOrder").ascending())
+                .stream()
+                .limit(8)
+                .map(this::toCustomerDto)
+                .collect(Collectors.toList());
+    }
+
 }

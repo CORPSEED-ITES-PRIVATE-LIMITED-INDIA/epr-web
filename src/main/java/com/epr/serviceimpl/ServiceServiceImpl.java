@@ -14,6 +14,7 @@ import com.epr.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -326,6 +327,15 @@ public class ServiceServiceImpl implements ServiceService {
                 .findBySubcategoryIdAndDeleteStatusAndDisplayStatus(subcategoryId, 2, 1) // active + visible
                 .stream()
                 .map(this::toResponseDto)  // Reuse your existing admin mapper → returns ServiceResponseDto
+                .collect(Collectors.toList());
+    }
+
+    public List<ServiceCustomerDto> findFooterServices() {
+        return serviceRepository.findByShowInFooterAndDeleteStatusAndDisplayStatus(1, 2, 1,
+                        Sort.by("footerOrder").ascending())
+                .stream()
+                .limit(8) // safety net
+                .map(this::toCustomerDto)
                 .collect(Collectors.toList());
     }
 

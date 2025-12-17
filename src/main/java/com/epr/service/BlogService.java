@@ -61,4 +61,6 @@ public interface BlogService {
     List<BlogCustomerDto> findFeaturedPublicBlogs();
 
     List<BlogCustomerDto> findPublicBlogsByServiceId(Long serviceId);
+
+    List<BlogCustomerDto> findFooterBlogs();
 }

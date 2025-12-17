@@ -44,14 +44,10 @@ public class ServiceDocument {
     private String addedByUUID;
 
     @Column(columnDefinition = "int default 2")
-    private int deleteStatus = 2;       // 1=deleted, 2=active
+    private int deleteStatus = 2;
 
-    // Relationship
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", nullable = false)
     private Services service;
 
-    // Optional: If you want to group documents under a tab/section later
-    // @ManyToOne
-    // private ServiceSection section;
 }

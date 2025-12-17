@@ -36,4 +36,5 @@ public interface ServiceService {
     List<ServiceResponseDto> findActivePublicServicesBySubcategoryId(Long subcategoryId);
 
 
+    List<ServiceCustomerDto> findFooterServices();
 }

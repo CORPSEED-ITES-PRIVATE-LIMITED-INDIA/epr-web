@@ -1,4 +1,3 @@
-// src/main/java/com/epr/entity/Blogs.java
 
 package com.epr.entity;
 
@@ -24,13 +23,11 @@ import java.util.List;
                 @Index(name = "idx_blogs_subcategory", columnList = "subcategory_id"),
                 @Index(name = "idx_blogs_home", columnList = "showHomeStatus, deleteStatus, displayStatus, postDate"),
                 @Index(name = "idx_blogs_visited", columnList = "visited DESC")
-                // FULLTEXT index added manually later — removed from here
+
         }
 )
 @Getter
 @Setter
-@DynamicInsert
-@DynamicUpdate
 public class Blogs {
 
     @Id
@@ -126,7 +123,7 @@ public class Blogs {
                     @Index(name = "idx_service_blogs_service", columnList = "service_id"),
                     @Index(name = "idx_service_blogs_blog", columnList = "blog_id")
             }
-    )
+    )  
     private List<Services> services = new ArrayList<>();
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -135,5 +132,13 @@ public class Blogs {
     public boolean isActive() {
         return deleteStatus == 2 && displayStatus == 1;
     }
+
+    @Column(name = "show_in_footer", nullable = false, columnDefinition = "tinyint default 2")
+    private int showInFooter = 2;
+
+    @Column(name = "footer_order", nullable = false, columnDefinition = "int default 0")
+    private int footerOrder = 0;
+
+
 
 }

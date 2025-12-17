@@ -27,7 +27,7 @@ public class CustomerServiceController {
     }
 
     // 2. Get service by slug (SEO friendly URL: /service/web-development)
-    @GetMapping("/slug/{slug}")
+    @GetMapping("/{slug}")
     public ResponseEntity<ServiceCustomerDto> getServiceBySlug(@PathVariable String slug) {
         ServiceCustomerDto service = serviceService.findActiveBySlug(slug);
         return service != null
@@ -71,5 +71,7 @@ public class CustomerServiceController {
         List<ServiceCustomerDto> services = serviceService.findLatestActiveServices(10);
         return ResponseEntity.ok(services); // Always return 200 + empty list if none
     }
+
+
 
 }

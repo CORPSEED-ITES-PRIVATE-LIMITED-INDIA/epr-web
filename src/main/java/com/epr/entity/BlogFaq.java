@@ -1,4 +1,3 @@
-// src/main/java/com/epr/entity/BlogFaq.java
 package com.epr.entity;
 
 import jakarta.persistence.*;
