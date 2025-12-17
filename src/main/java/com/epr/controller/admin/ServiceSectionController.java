@@ -33,6 +33,8 @@ public class ServiceSectionController {
                 : ResponseEntity.ok(list);
     }
 
+    //
+
     @GetMapping("/{id}")
     public ResponseEntity<ServiceSectionResponseDto> getById(@PathVariable Long id) {
         try {

@@ -1,6 +1,8 @@
 // src/main/java/com/epr/controller/customer/CustomerServiceController.java
 package com.epr.controller.customer;
 
+import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
+import com.epr.dto.admin.servicesection.ServiceSectionResponseDto;
 import com.epr.dto.customer.ServiceCustomerDto;
 import com.epr.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequestMapping("/services")
 @CrossOrigin(origins = "*") // Adjust in production
 public class CustomerServiceController {
+
 
     @Autowired
     private ServiceService serviceService;
@@ -72,6 +75,43 @@ public class CustomerServiceController {
         return ResponseEntity.ok(services); // Always return 200 + empty list if none
     }
 
+
+    /**
+     * Get all sections (with cards) for a service by slug
+     * Example: GET /services/web-development/sections
+     */
+    @GetMapping("/{slug}/sections")
+    public ResponseEntity<List<ServiceSectionResponseDto>> getSectionsByServiceSlug(
+            @PathVariable String slug) {
+
+        try {
+            List<ServiceSectionResponseDto> sections = serviceService.findSectionsByServiceSlug(slug);
+            return sections.isEmpty()
+                    ? ResponseEntity.noContent().build()
+                    : ResponseEntity.ok(sections);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    /**
+     * Get all active and visible FAQs for a service by slug
+     * Example: GET /services/web-development/faqs
+     */
+    @GetMapping("/{slug}/faqs")
+    public ResponseEntity<List<ServiceFaqResponseDto>> getFaqsByServiceSlug(
+            @PathVariable String slug) {
+
+        try {
+            List<ServiceFaqResponseDto> faqs = serviceService.findFaqsByServiceSlug(slug);
+            return faqs.isEmpty()
+                    ? ResponseEntity.noContent().build()
+                    : ResponseEntity.ok(faqs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 }

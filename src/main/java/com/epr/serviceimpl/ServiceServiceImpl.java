@@ -1,14 +1,17 @@
-// src/main/java/com/epr/serviceimpl/ServiceServiceImpl.java
 package com.epr.serviceimpl;
 
 import com.epr.dto.admin.service.ServiceRequestDto;
 import com.epr.dto.admin.service.ServiceResponseDto;
+import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
+import com.epr.dto.admin.servicesection.ServiceSectionResponseDto;
 import com.epr.dto.customer.ServiceCustomerDto;
 import com.epr.entity.Category;
 import com.epr.entity.Services;
 import com.epr.entity.Subcategory;
 import com.epr.entity.User;
 import com.epr.repository.*;
+import com.epr.service.ServiceFaqService;
+import com.epr.service.ServiceSectionService;
 import com.epr.service.ServiceService;
 import com.epr.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,8 @@ public class ServiceServiceImpl implements ServiceService {
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
     private final DateTimeUtil dateTimeUtil;
+    private final ServiceSectionService sectionService;
+    private final ServiceFaqService faqService;
 
     private User validateAndGetActiveUser(Long userId) {
         if (userId == null || userId <= 0) throw new IllegalArgumentException("User ID is required");
@@ -338,6 +343,39 @@ public class ServiceServiceImpl implements ServiceService {
                 .map(this::toCustomerDto)
                 .collect(Collectors.toList());
     }
+
+
+    @Override
+    public List<ServiceSectionResponseDto> findSectionsByServiceSlug(String slug) {
+        if (slug == null || slug.trim().isEmpty()) {
+            throw new IllegalArgumentException("Service slug is required");
+        }
+
+        Services service = serviceRepository.findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(
+                        slug.trim().toLowerCase(), 2, 1)
+                .orElseThrow(() -> new IllegalArgumentException("Service not found or not visible: " + slug));
+
+        return sectionService.findByServiceId(service.getId());
+    }
+
+
+
+    @Override
+    public List<ServiceFaqResponseDto> findFaqsByServiceSlug(String slug) {
+        if (slug == null || slug.trim().isEmpty()) {
+            throw new IllegalArgumentException("Service slug is required");
+        }
+
+        Services service = serviceRepository
+                .findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(slug.trim().toLowerCase(), 2, 1)
+                .orElseThrow(() -> new IllegalArgumentException("Service not found or not visible: " + slug));
+
+        return faqService.findByServiceId(service.getId())
+                .stream()
+                .filter(faq -> faq.getDisplayStatus() == 1) // Only visible FAQs
+                .collect(Collectors.toList());
+    }
+
 
 
 }

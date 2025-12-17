@@ -1,4 +1,3 @@
-// src/main/java/com/epr/entity/ServiceSection.java
 package com.epr.entity;
 
 import jakarta.persistence.*;
@@ -39,7 +38,6 @@ public class ServiceSection {
     private String modifyDate;
     private String addedByUUID;
 
-    // Standardize deleteStatus: 2 = active, 1 = deleted (same as all your other entities)
     @Column(columnDefinition = "int default 2")
     private int deleteStatus = 2;
 
