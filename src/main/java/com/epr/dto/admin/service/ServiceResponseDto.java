@@ -1,4 +1,3 @@
-// src/main/java/com/epr/dto/service/ServiceResponseDto.java
 package com.epr.dto.admin.service;
 
 import lombok.Getter;
@@ -16,7 +15,6 @@ public class ServiceResponseDto {
     private String thumbnail;
     private String videoUrl;
 
-    // SEO
     private String metaTitle;
     private String metaKeyword;
     private String metaDescription;
@@ -24,8 +22,8 @@ public class ServiceResponseDto {
     private int displayStatus;
     private int showHomeStatus;
 
-    private String postDate;     // formatted IST
-    private String modifyDate;   // formatted IST
+    private String postDate;
+    private String modifyDate;
     private Long visited;
     private int deleteStatus;
 
@@ -33,4 +31,9 @@ public class ServiceResponseDto {
     private String categoryName;
     private Long subcategoryId;
     private String subcategoryName;
+
+    // ADD THESE TWO FIELDS
+    private int showInFooter;
+    private int footerOrder;
+
 }

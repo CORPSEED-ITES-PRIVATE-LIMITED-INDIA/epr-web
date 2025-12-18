@@ -3,8 +3,9 @@ package com.epr.service;
 
 import com.epr.dto.admin.service.ServiceRequestDto;
 import com.epr.dto.admin.service.ServiceResponseDto;
+import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
 import com.epr.dto.customer.ServiceCustomerDto;
-
+import com.epr.dto.admin.servicesection.ServiceSectionResponseDto;
 import java.util.List;
 
 public interface ServiceService {
@@ -36,4 +37,9 @@ public interface ServiceService {
     List<ServiceResponseDto> findActivePublicServicesBySubcategoryId(Long subcategoryId);
 
 
+    List<ServiceCustomerDto> findFooterServices();
+
+    List<ServiceSectionResponseDto> findSectionsByServiceSlug(String slug);
+
+    List<ServiceFaqResponseDto> findFaqsByServiceSlug(String slug);
 }

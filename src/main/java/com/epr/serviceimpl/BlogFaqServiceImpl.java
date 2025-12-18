@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -109,4 +112,17 @@ public class BlogFaqServiceImpl implements BlogFaqService {
         }
         return dto;
     }
+
+    @Override
+    public List<BlogFaqResponseDto> findByBlogId(Long blogId) {
+        if (blogId == null || blogId <= 0) {
+            throw new IllegalArgumentException("Valid blog ID required");
+        }
+
+        return faqRepository.findByBlogIdAndDeleteStatusOrderByIdAsc(blogId, 2)
+                .stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
 }

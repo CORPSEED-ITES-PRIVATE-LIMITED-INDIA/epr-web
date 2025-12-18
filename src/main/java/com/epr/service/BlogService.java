@@ -3,6 +3,7 @@ package com.epr.service;
 
 import com.epr.dto.admin.blog.BlogRequestDto;
 import com.epr.dto.admin.blog.BlogResponseDto;
+import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 import com.epr.dto.customer.BlogCustomerDto;
 
 import java.util.List;
@@ -61,4 +62,10 @@ public interface BlogService {
     List<BlogCustomerDto> findFeaturedPublicBlogs();
 
     List<BlogCustomerDto> findPublicBlogsByServiceId(Long serviceId);
+
+    List<BlogCustomerDto> findFooterBlogs();
+
+    List<BlogFaqResponseDto> findFaqsByBlogSlug(String slug);
+
+
 }

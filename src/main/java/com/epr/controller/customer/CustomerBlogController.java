@@ -1,5 +1,6 @@
 package com.epr.controller.customer;
 
+import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 import com.epr.dto.customer.BlogCustomerDto;
 import com.epr.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,20 @@ public class CustomerBlogController {
     public ResponseEntity<List<BlogCustomerDto>> getBlogsByServiceId(@PathVariable Long serviceId) {
         List<BlogCustomerDto> blogs = blogService.findPublicBlogsByServiceId(serviceId);
         return ResponseEntity.ok(blogs);
+    }
+
+    @GetMapping("/{slug}/faqs")
+    public ResponseEntity<List<BlogFaqResponseDto>> getFaqsByBlogSlug(
+            @PathVariable String slug) {
+
+        try {
+            List<BlogFaqResponseDto> faqs = blogService.findFaqsByBlogSlug(slug);
+            return faqs.isEmpty()
+                    ? ResponseEntity.noContent().build()
+                    : ResponseEntity.ok(faqs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

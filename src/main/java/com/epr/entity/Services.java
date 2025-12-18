@@ -27,8 +27,6 @@ import java.util.List;
 )
 @Getter
 @Setter
-@DynamicInsert
-@DynamicUpdate
 public class Services {
 
     @Id
@@ -114,4 +112,10 @@ public class Services {
     public void incrementVisit() {
         this.visited++;
     }
+
+    @Column(nullable = false, columnDefinition = "tinyint default 2")
+    private int showInFooter = 2; // 1 = yes, 2 = no
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int footerOrder = 0; // for sorting
 }

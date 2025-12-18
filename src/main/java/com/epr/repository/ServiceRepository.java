@@ -1,7 +1,9 @@
 // src/main/java/com/epr/repository/ServiceRepository.java
+
 package com.epr.repository;
 
 import com.epr.entity.Services;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface ServiceRepository extends JpaRepository<Services, Long> {
 
@@ -25,19 +28,11 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
     List<Services> searchActiveServices(@Param("keyword") String keyword);
 
     boolean existsBySlugIgnoreCaseAndIdNot(String slug, Long id);
-
     boolean existsByTitleIgnoreCase(String title);
     boolean existsByTitleIgnoreCaseAndIdNot(String title, Long id);
 
-    // ADD THIS MISSING METHOD
-//    List<Services> findAllByIdInAndDeleteStatus(List<Long> ids, int deleteStatus);
-
-    // Alternative (cleaner & more efficient) using @Query - RECOMMENDED
     @Query("SELECT s FROM Services s WHERE s.id IN :ids AND s.deleteStatus = :deleteStatus")
     List<Services> findAllByIdInAndDeleteStatus(@Param("ids") List<Long> ids, @Param("deleteStatus") int deleteStatus);
-
-
-
 
     Optional<Services> findBySlugIgnoreCaseAndDeleteStatusAndDisplayStatus(
             String slug, int deleteStatus, int displayStatus);
@@ -63,8 +58,6 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
             "ORDER BY s.postDate DESC")
     List<Services> searchActivePublicServices(@Param("keyword") String keyword);
 
-
-    // For subcategory
     @Query("SELECT s FROM Services s WHERE s.subcategory.id = :subcategoryId " +
             "AND s.deleteStatus = :deleteStatus AND s.displayStatus = :displayStatus " +
             "ORDER BY s.postDate DESC")
@@ -73,13 +66,27 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
             @Param("deleteStatus") int deleteStatus,
             @Param("displayStatus") int displayStatus);
 
-    // For latest N services
     @Query("SELECT s FROM Services s " +
             "WHERE s.deleteStatus = 2 AND s.displayStatus = 1 " +
             "ORDER BY s.postDate DESC")
-    List<Services> findTopNActiveAndVisibleServices(@Param("limit") int limit);
+    List<Services> findTopNActiveAndVisibleServices(int limit); // Note: @Param("limit") not needed for limit in JPQL
 
+    /* ==================== FOOTER QUERY ==================== */
 
-
-
+    /**
+     * Find services to display in footer:
+     * - showInFooter = 1
+     * - deleteStatus = 2
+     * - displayStatus = 1
+     * - Ordered by footerOrder
+     */
+    @Query("SELECT s FROM Services s " +
+            "WHERE s.showInFooter = :showInFooter " +
+            "AND s.deleteStatus = :deleteStatus " +
+            "AND s.displayStatus = :displayStatus")
+    List<Services> findByShowInFooterAndDeleteStatusAndDisplayStatus(
+            @Param("showInFooter") int showInFooter,
+            @Param("deleteStatus") int deleteStatus,
+            @Param("displayStatus") int displayStatus,
+            Sort sort);
 }

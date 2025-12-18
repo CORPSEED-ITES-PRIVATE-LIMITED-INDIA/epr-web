@@ -1,4 +1,3 @@
-// src/main/java/com/epr/entity/BlogFaq.java
 package com.epr.entity;
 
 import jakarta.persistence.*;
@@ -48,5 +47,6 @@ public class BlogFaq {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id", nullable = false)
     private Blogs blog;
+
 
 }

@@ -1,6 +1,7 @@
 package com.epr.controller.admin;
 
 import com.epr.dto.admin.blogfaq.BlogFaqRequestDto;
+import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 import com.epr.error.ApiResponse;
 import com.epr.service.BlogFaqService;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/blogs/{blogId}/faqs")
 public class BlogFaqController {
@@ -20,6 +23,7 @@ public class BlogFaqController {
     @Autowired
     private BlogFaqService blogFaqService;
 
+    // CREATE
     @PostMapping
     public ResponseEntity<?> createFaq(
             @PathVariable Long blogId,
@@ -28,7 +32,8 @@ public class BlogFaqController {
 
         log.info("Creating FAQ for blogId={} by userId={}", blogId, userId);
         try {
-            return new ResponseEntity<>(blogFaqService.createFaq(blogId, dto, userId), HttpStatus.CREATED);
+            BlogFaqResponseDto response = blogFaqService.createFaq(blogId, dto, userId);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
@@ -37,6 +42,22 @@ public class BlogFaqController {
         }
     }
 
+    // READ - List all FAQs for a blog
+    @GetMapping
+    public ResponseEntity<List<BlogFaqResponseDto>> getFaqsByBlogId(@PathVariable Long blogId) {
+        log.info("Fetching FAQs for blogId={}", blogId);
+        try {
+            List<BlogFaqResponseDto> faqs = blogFaqService.findByBlogId(blogId);
+            return ResponseEntity.ok(faqs);
+        } catch (IllegalArgumentException e) {
+            throw e; // Will be handled globally or return bad request
+        } catch (Exception e) {
+            log.error("Error fetching FAQs for blogId={}", blogId, e);
+            throw new RuntimeException("Failed to fetch FAQs", e);
+        }
+    }
+
+    // UPDATE
     @PutMapping("/{faqId}")
     public ResponseEntity<?> updateFaq(
             @PathVariable Long blogId,
@@ -46,7 +67,8 @@ public class BlogFaqController {
 
         log.info("Updating FAQ {} for blogId={} by userId={}", faqId, blogId, userId);
         try {
-            return ResponseEntity.ok(blogFaqService.updateFaq(blogId, faqId, dto, userId));
+            BlogFaqResponseDto response = blogFaqService.updateFaq(blogId, faqId, dto, userId);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             boolean notFound = e.getMessage().toLowerCase().contains("not found");
             return ResponseEntity.status(notFound ? 404 : 400)
@@ -57,6 +79,7 @@ public class BlogFaqController {
         }
     }
 
+    // SOFT DELETE
     @DeleteMapping("/{faqId}")
     public ResponseEntity<?> deleteFaq(
             @PathVariable Long blogId,

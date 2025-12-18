@@ -1,6 +1,8 @@
 // src/main/java/com/epr/controller/customer/CustomerServiceController.java
 package com.epr.controller.customer;
 
+import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
+import com.epr.dto.admin.servicesection.ServiceSectionResponseDto;
 import com.epr.dto.customer.ServiceCustomerDto;
 import com.epr.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequestMapping("/services")
 @CrossOrigin(origins = "*") // Adjust in production
 public class CustomerServiceController {
+
 
     @Autowired
     private ServiceService serviceService;
@@ -27,7 +30,7 @@ public class CustomerServiceController {
     }
 
     // 2. Get service by slug (SEO friendly URL: /service/web-development)
-    @GetMapping("/slug/{slug}")
+    @GetMapping("/{slug}")
     public ResponseEntity<ServiceCustomerDto> getServiceBySlug(@PathVariable String slug) {
         ServiceCustomerDto service = serviceService.findActiveBySlug(slug);
         return service != null
@@ -65,11 +68,49 @@ public class CustomerServiceController {
                 : ResponseEntity.ok(services);
     }
 
-    // 5. NEW: Latest 10 recently posted services
     @GetMapping("/latest")
     public ResponseEntity<List<ServiceCustomerDto>> getLatestServices() {
         List<ServiceCustomerDto> services = serviceService.findLatestActiveServices(10);
-        return ResponseEntity.ok(services); // Always return 200 + empty list if none
+        return ResponseEntity.ok(services);
     }
+
+
+    /**
+     * Get all sections (with cards) for a service by slug
+     * Example: GET /services/web-development/sections
+     */
+    @GetMapping("/{slug}/sections")
+    public ResponseEntity<List<ServiceSectionResponseDto>> getSectionsByServiceSlug(
+            @PathVariable String slug) {
+
+        try {
+            List<ServiceSectionResponseDto> sections = serviceService.findSectionsByServiceSlug(slug);
+            return sections.isEmpty()
+                    ? ResponseEntity.noContent().build()
+                    : ResponseEntity.ok(sections);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    /**
+     * Get all active and visible FAQs for a service by slug
+     * Example: GET /services/web-development/faqs
+     */
+    @GetMapping("/{slug}/faqs")
+    public ResponseEntity<List<ServiceFaqResponseDto>> getFaqsByServiceSlug(
+            @PathVariable String slug) {
+
+        try {
+            List<ServiceFaqResponseDto> faqs = serviceService.findFaqsByServiceSlug(slug);
+            return faqs.isEmpty()
+                    ? ResponseEntity.noContent().build()
+                    : ResponseEntity.ok(faqs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }
