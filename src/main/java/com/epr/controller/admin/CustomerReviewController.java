@@ -75,13 +75,4 @@ public class CustomerReviewController {
         return ResponseEntity.ok(reviewService.getAllPublicVisibleReviews());
     }
 
-    @GetMapping("/service/{serviceId}")
-    public ResponseEntity<List<CustomerReviewCustomerDto>> getByService(@PathVariable Long serviceId) {
-        return ResponseEntity.ok(reviewService.getPublicReviewsByServiceId(serviceId));
-    }
-
-    @GetMapping("/blog/{blogId}")
-    public ResponseEntity<List<CustomerReviewCustomerDto>> getByBlog(@PathVariable Long blogId) {
-        return ResponseEntity.ok(reviewService.getPublicReviewsByBlogId(blogId));
-    }
 }

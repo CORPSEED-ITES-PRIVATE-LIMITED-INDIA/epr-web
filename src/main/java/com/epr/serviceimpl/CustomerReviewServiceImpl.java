@@ -83,7 +83,6 @@ public class CustomerReviewServiceImpl implements CustomerReviewService {
         reviewRepository.save(review);
     }
 
-    // ====================== PUBLIC ======================
 
     @Override
     public List<CustomerReviewCustomerDto> getPublicFeaturedReviews(int limit) {
@@ -103,23 +102,6 @@ public class CustomerReviewServiceImpl implements CustomerReviewService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<CustomerReviewCustomerDto> getPublicReviewsByServiceId(Long serviceId) {
-        return reviewRepository.findPublicByServiceId(serviceId)
-                .stream()
-                .map(this::toCustomerDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<CustomerReviewCustomerDto> getPublicReviewsByBlogId(Long blogId) {
-        return reviewRepository.findPublicByBlogId(blogId)
-                .stream()
-                .map(this::toCustomerDto)
-                .collect(Collectors.toList());
-    }
-
-    // ====================== MAPPERS & HELPERS ======================
 
     private void validateDto(CustomerReviewRequestDto dto) {
         if (dto == null) throw new IllegalArgumentException("Review data is required");

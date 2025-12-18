@@ -55,17 +55,5 @@ public interface CustomerReviewService {
      */
     List<CustomerReviewCustomerDto> getAllPublicVisibleReviews();
 
-    /**
-     * Get visible reviews linked to a specific service.
-     * @param serviceId Service ID
-     * @return List of public DTOs
-     */
-    List<CustomerReviewCustomerDto> getPublicReviewsByServiceId(Long serviceId);
 
-    /**
-     * Get visible reviews linked to a specific blog.
-     * @param blogId Blog ID
-     * @return List of public DTOs
-     */
-    List<CustomerReviewCustomerDto> getPublicReviewsByBlogId(Long blogId);
 }
