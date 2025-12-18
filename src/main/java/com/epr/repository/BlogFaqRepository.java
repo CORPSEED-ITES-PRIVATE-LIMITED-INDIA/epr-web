@@ -1,6 +1,5 @@
 package com.epr.repository;
 
-
 import com.epr.entity.BlogFaq;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -35,7 +35,6 @@ public class ServiceRequestDto {
     private Integer displayStatus = 1;
     private Integer showHomeStatus = 2;
 
-    // ADD THESE TWO FIELDS
-    private Integer showInFooter = 2;  // 1 = show in footer, 2 = hide (default)
-    private Integer footerOrder = 0;   // order number (0,1,2,3...)
+    private Integer showInFooter = 2;
+    private Integer footerOrder = 0;
 }

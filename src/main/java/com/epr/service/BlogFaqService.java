@@ -1,13 +1,11 @@
 package com.epr.service;
 
-
 import com.epr.dto.admin.blogfaq.BlogFaqRequestDto;
 import com.epr.dto.admin.blogfaq.BlogFaqResponseDto;
 
 import java.util.List;
 
 public interface BlogFaqService {
-
 
     BlogFaqResponseDto createFaq(Long blogId, BlogFaqRequestDto dto, Long userId);
 
