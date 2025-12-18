@@ -1,6 +1,4 @@
-// src/main/java/com/epr/entity/Client.java
 package com.epr.entity;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

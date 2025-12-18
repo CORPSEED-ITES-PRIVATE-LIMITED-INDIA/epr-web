@@ -1,4 +1,3 @@
-// src/main/java/com/epr/controller/CategoryController.java
 package com.epr.controller.admin;
 
 import com.epr.dto.admin.category.CategoryRequestDto;

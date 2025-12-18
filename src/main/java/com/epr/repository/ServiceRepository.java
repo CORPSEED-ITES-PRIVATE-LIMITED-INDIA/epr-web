@@ -89,4 +89,14 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
             @Param("deleteStatus") int deleteStatus,
             @Param("displayStatus") int displayStatus,
             Sort sort);
+
+    /**
+     * Find a service by ID and ensure it's active (deleteStatus = 2)
+     * Used when linking reviews, blogs, etc. to services
+     */
+    @Query("SELECT s FROM Services s WHERE s.id = :id AND s.deleteStatus = :deleteStatus")
+    Optional<Services> findByIdAndDeleteStatus(@Param("id") Long id, @Param("deleteStatus") int deleteStatus);
+
+
+
 }
