@@ -1,4 +1,3 @@
-// src/main/java/com/epr/config/SecurityConfig.java
 package com.epr.config;
 
 import org.springframework.context.annotation.Bean;
@@ -29,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Static resources
+                        // Static resources & basic pages
                         .requestMatchers("/", "/login", "/register",
                                 "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
 
@@ -41,34 +40,42 @@ public class SecurityConfig {
                         .requestMatchers("/services/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/client/**").permitAll()
 
-                        // === BLOG ENDPOINTS - FULLY PUBLIC (including all sub-paths) ===
+                        // === BLOG ENDPOINTS - FULLY PUBLIC ===
                         .requestMatchers("/blogs", "/blogs/**").permitAll()
 
-                        // Everything else requires authentication
+                        // Everything else requires authentication (admin pages, etc.)
                         .anyRequest().authenticated()
                 )
+
+                // ADD THIS: Prevents 302 redirects on API calls
+                .httpBasic(httpBasic -> httpBasic
+                        .realmName("EPR Application")  // Optional, but nice to have
+                )
+
+                // Keep form login for browser-based web flows
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                // Disable CSRF only for stateless/public APIs
+
+                // Disable CSRF for public/stateless APIs
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(
                                 "/api/**",
                                 "/services/**",
-                                "/blogs",
-                                "/blogs/**"
+                                "/blogs", "/blogs/**",
+                                "/client/**"  // Recommended: add this too for safety
                         )
                 );
 
         return http.build();
     }
-
-
 }

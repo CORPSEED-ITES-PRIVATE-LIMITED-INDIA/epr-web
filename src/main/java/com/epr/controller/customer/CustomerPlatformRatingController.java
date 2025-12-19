@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/platform-ratings")  // Same level as /blogs
+@RequestMapping("/client/platform-ratings")  // Same level as /blogs
 @CrossOrigin(origins = "*")
 public class CustomerPlatformRatingController {
 

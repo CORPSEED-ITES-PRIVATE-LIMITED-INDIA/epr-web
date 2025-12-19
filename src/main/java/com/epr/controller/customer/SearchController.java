@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/search")
-@CrossOrigin(origins = "*") // Adjust in production
+@RequestMapping("/client/search")
+@CrossOrigin(origins = "*")
 public class SearchController {
 
     @Autowired

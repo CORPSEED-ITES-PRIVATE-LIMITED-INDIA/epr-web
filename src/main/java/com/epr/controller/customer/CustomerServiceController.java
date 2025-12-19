@@ -1,4 +1,3 @@
-// src/main/java/com/epr/controller/customer/CustomerServiceController.java
 package com.epr.controller.customer;
 
 import com.epr.dto.admin.servicefaq.ServiceFaqResponseDto;
@@ -12,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/services")
-@CrossOrigin(origins = "*") // Adjust in production
+@RequestMapping("/client/services")
 public class CustomerServiceController {
 
 
@@ -29,7 +27,6 @@ public class CustomerServiceController {
                 : ResponseEntity.ok(services);
     }
 
-    // 2. Get service by slug (SEO friendly URL: /service/web-development)
     @GetMapping("/{slug}")
     public ResponseEntity<ServiceCustomerDto> getServiceBySlug(@PathVariable String slug) {
         ServiceCustomerDto service = serviceService.findActiveBySlug(slug);
@@ -38,7 +35,6 @@ public class CustomerServiceController {
                 : ResponseEntity.notFound().build();
     }
 
-    // 3. Get services by category ID (for category page)
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ServiceCustomerDto>> getServicesByCategory(@PathVariable Long categoryId) {
         List<ServiceCustomerDto> services = serviceService.findActiveByCategoryId(categoryId);
