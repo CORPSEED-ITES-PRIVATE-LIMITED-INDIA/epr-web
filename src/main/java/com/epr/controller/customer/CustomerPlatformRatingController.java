@@ -1,4 +1,3 @@
-// src/main/java/com/epr/controller/customer/CustomerPlatformRatingController.java
 package com.epr.controller.customer;
 
 import com.epr.dto.customer.PlatformRatingDto;
@@ -10,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/client/platform-ratings")  // Same level as /blogs
-@CrossOrigin(origins = "*")
+@RequestMapping("/client/platform-ratings")
 public class CustomerPlatformRatingController {
 
     @Autowired

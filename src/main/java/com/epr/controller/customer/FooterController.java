@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/client/footer")
-@CrossOrigin(origins = "*")
 public class FooterController {
 
     @Autowired
